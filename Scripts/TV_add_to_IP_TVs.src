@@ -1,0 +1,37 @@
+
+# /ip dhcp-server lease remove [find (mac-address~"70:2E:D9:" || mac-address~"C0:8A:CD:")]
+
+:foreach leaseId in=[/ip arp find where (mac-address~"70:2E:D9:" || mac-address~"C0:8A:CD:")] do={
+
+:local leaseIP [/ip arp get $leaseId address];
+:local leaseMAC  [/ip arp get $leaseId mac-address];
+
+:if ([:len $leaseMAC]  != 0) do={
+
+:if ([:len [/ip dhcp-server lease find where mac-address=$leaseMAC]] = 0) do={
+#:log info "Add new (from ARP) DHCP static IP $leaseIP ($leaseMAC)";
+/ip dhcp-server lease add address=$leaseIP server=default comment="TV (AUTO add TV to rule)" mac-address=$leaseMAC client-id="1:$leaseMAC" always-broadcast=yes
+}
+
+}
+
+}
+
+
+
+
+
+:foreach i in=[/ip dhcp-server lease find (comment~"TV" or mac-address~"70:2E:D9:" or mac-address~"C0:8A:CD:")] do={
+
+:local host [/ip dhcp-server lease get $i host-name];
+:local ip [/ip dhcp-server lease get $i address];
+:local mac [/ip dhcp-server lease get $i mac-address];
+
+# :log info ("Try add TV ips to IP_TVs => $mac $dynamicHOST");
+:do { /ip firewall address-list add list="IP_TVs" address="$ip" timeout="06:00:00" comment="AUTO add TV to rule, $mac $dynamicHOST" } on-error={
+# :log error message="TV no added here, error."
+}
+
+/ip dhcp-server lease make-static $i
+
+}
