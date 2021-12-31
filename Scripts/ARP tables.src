@@ -1,0 +1,22 @@
+
+
+:foreach leaseId in=[/ip arp find ] do={
+
+:local leaseIP [/ip arp get $leaseId address];
+:local leaseMAC  [/ip arp get $leaseId mac-address];
+
+:if ([:len $leaseMAC]  != 0) do={
+
+/ip dhcp-server lease remove [/ip dhcp-server lease find mac-address=$leaseMAC]
+/ip dhcp-server lease remove [/ip dhcp-server lease find address=$leaseIP]
+
+#:if ([:len [/ip dhcp-server lease find where mac-address=$leaseMAC]] = 0) do={
+:log info "Add new (from ARP) DHCP static IP $leaseIP ($leaseMAC)";
+/ip dhcp-server lease add address=$leaseIP server=default comment="ARP tables." mac-address=$leaseMAC client-id="1:$leaseMAC" always-broadcast=yes
+#}
+
+}
+
+}
+
+:log info "Script 'arp_to_dhcp' finished.";
