@@ -562,3 +562,11 @@
 /ip firewall address-list add address=102.132.112.0/24 list=IP_WhatsAPP
 /ip firewall address-list add address=102.132.101.0/24 list=IP_WhatsAPP
 /ip firewall address-list add address=102.132.100.0/24 list=IP_WhatsAPP
+/ip firewall address-list add address=69.195.183.0/24 list=IP_WhatsAPP
+/ip firewall address-list add address=69.195.184.0/24 list=IP_WhatsAPP
+/ip firewall address-list add address=188.64.224.0/21 list=IP_WhatsAPP
+/ip firewall address-list add address=199.16.156.0/23 list=IP_WhatsAPP
+/ip firewall address-list add address=199.96.58.0/23 list=IP_WhatsAPP
+/ip firewall address-list add address=199.96.60.0/24 list=IP_WhatsAPP
+/ip firewall address-list add address=199.96.61.0/24 list=IP_WhatsAPP
+/ip firewall address-list add address=209.237.202.0/24 list=IP_WhatsAPP
