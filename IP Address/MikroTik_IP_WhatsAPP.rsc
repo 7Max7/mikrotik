@@ -570,3 +570,10 @@
 /ip firewall address-list add address=199.96.60.0/24 list=IP_WhatsAPP
 /ip firewall address-list add address=199.96.61.0/24 list=IP_WhatsAPP
 /ip firewall address-list add address=209.237.202.0/24 list=IP_WhatsAPP
+
+/ip firewall mangle
+add action=add-dst-to-address-list address-list=IP_WhatsAPP \
+    address-list-timeout=12h chain=forward comment=\
+    "WhatsAPP catcher UDP 443 with packet size 1260" dst-address-list=\
+    !IP_WhatsAPP dst-port=443 in-interface=bridge packet-size=1260 \
+    protocol=udp

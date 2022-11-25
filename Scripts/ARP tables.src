@@ -20,3 +20,52 @@
 }
 
 :log info "Script 'arp_to_dhcp' finished.";
+
+
+
+:foreach a in=[/interface find disabled=yes] do={
+:log error message="Interface lost 1 connection $a"
+}
+
+
+:if ( [/interface get [/interface find name=ether1 ] disabled] = true ) do={
+:log error message="Interface ether1 lost connection"
+/interface set [find name=ether1] disabled=no
+:log error message="Interface ether1 enabled."
+}
+
+
+
+
+/interface set [find name=ether3] disabled=yes
+:delay 2s
+/interface set [find name=ether3] disabled=no
+:log error message="Interface lost connection"
+
+
+
+
+:set Is_disabled [/interface get [/interface find name=ether4 ] disabled];
+
+:if ( $Is_disabled = "yes" ) do={
+:log error message="Interface lost 1 connection $curup"
+}
+
+
+:foreach i in=[/ip interface find [find name=ether1]] do={
+
+:log error message="Interface lost 1 connection"
+
+:set curup [/ip interface get $i disabled];
+
+:log error message="Interface lost 1 connection $curup"
+
+:if ( $curup = "yes" ) do={
+:log error message="Interface lost 1 connection $curup"
+}
+
+}
+
+
+
+
